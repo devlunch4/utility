@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한글 글자수 세기 - Counting Korean Characters</title>
+    <style>
+        /* 기본 스타일 설정 (Basic styling) */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* 텍스트 입력창 스타일 (Text area styling) */
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 20px;
+        }
+
+        /* 결과 표시 영역 스타일 (Result display styling) */
+        .result {
+            margin-top: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* 결과 레이블 스타일 (Label styling) */
+        .label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 제목 (Title) -->
+    <h1>한글 글자수 세기 - Counting Korean Characters</h1>
+    <!-- 설명 (Description) -->
+    <p>아래에 텍스트를 입력하면 글자 수를 계산합니다.<br>
+        When you enter text below, the character count will be calculated.
+    </p>
+    <textarea id="textInput" placeholder="텍스트를 입력하세요... Write text here..."></textarea>
+
+    <div class="result">
+        <p class="label">띄어쓰기 포함 글자 수(Character count with spaces)<br>: <span id="withSpaces">0</span></p>
+        <p class="label">띄어쓰기 제외 글자 수(Character count without spaces)<br>: <span id="withoutSpaces">0</span></p>
+    </div>
+
+    <!-- Script start -->
+    <script>
+        // 텍스트 입력 요소와 결과 요소 가져오기 (Get text input and result elements)
+        const textInput = document.getElementById('textInput');
+        const withSpaces = document.getElementById('withSpaces');
+        const withoutSpaces = document.getElementById('withoutSpaces');
+
+        // 텍스트 입력 이벤트 리스너 추가 (Add event listener to text input)
+        textInput.addEventListener('input', () => {
+            const text = textInput.value; // 입력된 텍스트 가져오기 (Get input text)
+            const textWithoutSpaces = text.replace(/\s/g, ''); // 공백 제거한 텍스트 (Remove spaces from text)
+
+            // 결과 업데이트 (Update results)
+            withSpaces.textContent = text.length; // 띄어쓰기 포함 글자 수 (Character count with spaces)
+            withoutSpaces.textContent = textWithoutSpaces.length; // 띄어쓰기 제외 글자 수 (Character count without spaces)
+        });
+    </script>
+</body>
+
+</html>
