@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Splitter and Excel Format Converter</title>
+</head>
+
+<body>
+    <h2>Convert Text to Excel Format by Custom Delimiter</h2>
+    <div class="in">
+        <p>**Enter text**</p>
+        <textarea id="inputText" placeholder="Enter text here..." rows="4" cols="50"></textarea><br>
+        <p>**Enter delimiter (e.g., space, comma, semicolon, etc.)**</p>
+        <input type="text" id="delimiter" placeholder="Enter delimiter" /><br>
+        <button onclick="convertToExcel()">Convert</button>
+        <hr>
+    </div>
+
+    <div class="out">
+        <p>**Converted Result (Excel Format)**</p>
+        <textarea id="outputText" rows="4" cols="50" readonly></textarea><br>
+        <button onclick="copyToClipboard()">Copy to Clipboard</button>
+    </div>
+
+    <script>
+        function convertToExcel() {
+            let input = document.getElementById('inputText').value;
+            let delimiter = document.getElementById('delimiter').value || ' '; // 기본 구분자는 공백
+            let output = input.split(delimiter).join('\t'); // 사용자가 입력한 구분자로 분할 후 탭으로 변환
+            document.getElementById('outputText').value = output;
+        }
+
+        function copyToClipboard() {
+            let outputText = document.getElementById('outputText');
+            outputText.select();
+            document.execCommand('copy'); // 이전 방식, 더 이상 권장되지 않지만 호환성을 위해 추가
+            // 최신 방법 (브라우저가 이 방법을 지원하는 경우)
+            // navigator.clipboard.writeText(outputText.value).then(() => alert("Copied to clipboard"));
+            alert("Copied to clipboard");
+        }
+    </script>
+</body>
+
+</html>
