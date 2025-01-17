@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Normalize Line Breaks</title>
+    <style>
+        :root {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 1.25rem;
+            /* 20px -> 1.25rem */
+        }
+
+        textarea {
+            width: 100%;
+            height: 15rem;
+            /* 240px -> 15rem */
+            margin-bottom: 0.625rem;
+            /* 10px -> 0.625rem */
+            border: 1px solid black;
+            padding: 0.625rem;
+            /* 10px -> 0.625rem */
+            box-sizing: border-box;
+            line-height: 1.5;
+            font-size: 1rem;
+            /* 16px -> 1rem */
+        }
+
+        button {
+            display: block;
+            margin-bottom: 0.625rem;
+            /* 10px -> 0.625rem */
+            font-size: 1rem;
+            /* 16px -> 1rem */
+        }
+
+        #output {
+            white-space: pre-wrap;
+            background: LightGray;
+            padding: 0.625rem;
+            /* 10px -> 0.625rem */
+            border: 1px solid LightGray;
+            box-sizing: border-box;
+            width: 100%;
+            max-height: 18.75rem;
+            /* 300px -> 18.75rem */
+            overflow-y: auto;
+        }
+
+        .space-1 {
+            background-color: lightgreen;
+            padding: 0 0.125rem;
+            /* 2px -> 0.125rem */
+        }
+
+        .result {
+            margin-top: 1rem;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div>
+            <h1 id="title">Normalize Line Breaks / 띄어쓰기 및 줄 바꿈 정리기</h1>
+            <textarea id="inputText" placeholder="Enter your text here"></textarea>
+            <button id="processButton">Normalize Line Breaks</button>
+        </div>
+
+        <div class="result">
+            <p>Result:</p>
+            <p class="label">Character count with spaces / 띄어쓰기 포함 글자 수<br>: <span id="withSpaces">0</span></p>
+            <p class="label">Character count without spaces / 띄어쓰기 제외 글자 수<br>: <span id="withoutSpaces">0</span></p>
+            <button id="copyButton">Copy Result</button>
+            <div id="output"></div>
+        </div>
+    </div>
+
+    <script>
+        const exampleText = `>>> Please enter here.
+Hello   world! 
+This is a test.
+
+   How are you?
+I hope you're doing well!`;
+
+        // Get text input and result elements (텍스트 입력 요소와 결과 요소 가져오기)
+        const textInput = document.getElementById('inputText');
+        const withSpaces = document.getElementById('withSpaces');
+        const withoutSpaces = document.getElementById('withoutSpaces');
+        const output = document.getElementById('output');
+
+        // Set example text on page load (페이지 로드 시 기본 텍스트 설정)
+        textInput.value = exampleText;
+
+        // Text processing function (텍스트 처리 함수)
+        function processText() {
+            const text = textInput.value; // Get input text (입력된 텍스트 가져오기)
+            const textWithoutSpaces = text.replace(/\s/g, ''); // Remove spaces from text (공백 제거한 텍스트)
+
+            // Update results (결과 업데이트)
+            withSpaces.textContent = text.length; // Character count with spaces (띄어쓰기 포함 글자 수)
+            withoutSpaces.textContent = textWithoutSpaces.length; // Character count without spaces (띄어쓰기 제외 글자 수)
+
+            // Normalize line breaks (줄 바꿈 처리)
+            const normalizedText = text.replace(/\n{2,}/g, "\n");
+            const spaceNormalizedText = normalizedText.replace(/ {2,}/g, " ");
+            const highlightedText = spaceNormalizedText.replace(/( {1})/g, (match) => {
+                return `<span class="space-1">${match}</span>`;
+            });
+
+            // Display processed text (처리된 텍스트를 출력)
+            output.innerHTML = highlightedText;
+            output.style.height = output.scrollHeight + "px";
+        }
+
+        // Automatically process text on page load (페이지 로드 시 자동으로 텍스트 처리)
+        processText();
+
+        // Process text on input change (텍스트 입력 시 처리)
+        textInput.addEventListener("input", processText);
+
+        // Process text on button click (버튼 클릭 시 처리)
+        document.getElementById("processButton").addEventListener("click", processText);
+
+        // Copy result functionality (결과 복사 기능)
+        document.getElementById("copyButton").addEventListener("click", function () {
+            const outputText = output.textContent;
+            navigator.clipboard.writeText(outputText).then(() => {
+                alert("Result copied to clipboard!");
+            }).catch(err => {
+                alert("Failed to copy: " + err);
+            });
+        });
+    </script>
+</body>
+
+</html>
