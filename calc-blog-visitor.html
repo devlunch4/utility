@@ -65,7 +65,7 @@
                     const dateRange = `[${last4Days[0].id}~${last4Days[last4Days.length - 1].id}]`;
 
                     document.getElementById('result').innerHTML =
-                    `<br>
+                        `<br>
                      <hr>
                      <br>
                      <a href="https://m.blog.naver.com/${blogId}" target="_blank">https://m.blog.naver.com/${blogId}</a><br>
@@ -75,13 +75,28 @@
                      <br>
                      *4일 평균 방문자 수: ${average.toFixed(0)} ${dateRange}<br>
                      ===============: ${average.toFixed(2)}`;
+                } else if (this.status == 403) {
+                    document.getElementById('result').innerText = '403 Forbidden: 접근이 금지되었습니다.';
+                } else if (this.status == 404) {
+                    document.getElementById('result').innerText = '404 Not Found: 요청한 블로그를 찾을 수 없습니다.';
+                    // } else if (this.status == 500) {
+                    //     document.getElementById('result').innerText = '500 Internal Server Error: 서버 내부 오류가 발생했습니다.';
+                    // } else if (this.status == 502) {
+                    //     document.getElementById('result').innerText = '502 Bad Gateway: 서버가 잘못된 응답을 받았습니다.';
+                    // } else if (this.status == 503) {
+                    //     document.getElementById('result').innerText = '503 Service Unavailable: 서비스가 일시적으로 사용할 수 없습니다.';
+                    // } else if (this.status == 504) {
+                    //     document.getElementById('result').innerText = '504 Gateway Timeout: 서버가 응답을 기다리다 타임아웃되었습니다.';
+                    // } else {
+                    //     document.getElementById('result').innerText = '데이터를 가져오지 못했습니다. 상태 코드: ' + this.status;
+                    // }
                 } else {
-                    document.getElementById('result').innerText = '데이터를 가져오지 못했습니다.';
+                    document.getElementById('result').innerText = '데이터를 가져오지 못했습니다. 상태 코드: ' + this.status;
                 }
             };
 
             xhr.onerror = function () {
-                document.getElementById('result').innerText = '요청 중 오류가 발생했습니다.';
+                document.getElementById('result').innerText = '요청 중 오류가 발생했습니다. 상태 코드: ' + this.status;
             };
 
             xhr.send();
