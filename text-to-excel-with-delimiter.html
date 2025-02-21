@@ -1,46 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text Splitter and Excel Format Converter</title>
 </head>
-
 <body>
     <h2>Convert Text to Excel Format by Custom Delimiter</h2>
-    <div class="in">
-        <p>**Enter text**</p>
-        <textarea id="inputText" placeholder="Enter text here..." rows="4" cols="50"></textarea><br>
-        <p>**Enter delimiter (e.g., space, comma, semicolon, etc.)**</p>
-        <input type="text" id="delimiter" placeholder="Enter delimiter" /><br>
-        <button onclick="convertToExcel()">Convert</button>
-        <hr>
+    
+    <!-- Input Section -->
+    <div class="input-section">
+        <p><strong>Enter text</strong></p>
+        <textarea id="inputText" placeholder="Enter text here..." rows="4" cols="50"></textarea>
+        
+        <p><strong>Enter delimiter (e.g., space, comma, semicolon)</strong></p>
+        <input type="text" id="delimiter" placeholder="Enter delimiter">
+        
+        <div>
+            <button onclick="convertToExcel()">Convert to Tabs</button>
+            <button onclick="formatTextForExcel()">Convert to Excel Format</button>
+        </div>
     </div>
 
-    <div class="out">
-        <p>**Converted Result (Excel Format)**</p>
-        <textarea id="outputText" rows="4" cols="50" readonly></textarea><br>
-        <button onclick="copyToClipboard()">Copy to Clipboard</button>
+    <!-- Output Section 1: Simple Tab Conversion -->
+    <div class="output-section">
+        <p><strong>Converted Result (Tab-Separated)</strong></p>
+        <textarea id="outputText" rows="4" cols="50" readonly></textarea>
+        <div>
+            <button onclick="copyToClipboard()">Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <!-- Output Section 2: Excel Formatted -->
+    <div class="excel-output-section">
+        <p><strong>Converted Result (Excel Format)</strong></p>
+        <textarea id="outputFormatText" rows="4" cols="50" readonly></textarea>
+        <div>
+            <button onclick="copyToClipboardFormat()">Copy to Clipboard</button>
+        </div>
     </div>
 
     <script>
         function convertToExcel() {
-            let input = document.getElementById('inputText').value;
-            let delimiter = document.getElementById('delimiter').value || ' '; // 기본 구분자는 공백
-            let output = input.split(delimiter).join('\t'); // 사용자가 입력한 구분자로 분할 후 탭으로 변환
+            const input = document.getElementById('inputText').value;
+            const delimiter = document.getElementById('delimiter').value || ' ';
+            const output = input.split(delimiter).join('\t');
             document.getElementById('outputText').value = output;
         }
 
+        function formatTextForExcel() {
+            const inputText = document.getElementById('inputText').value;
+            const lines = inputText.trim().split("\n");
+            let formattedLines = [];
+
+            for (let i = 0; i < lines.length; i += 3) {
+                if (lines[i] && lines[i + 1] && lines[i + 2]) {
+                    const date = lines[i].trim();
+                    const description = lines[i + 1].trim();
+                    const points = lines[i + 2].trim();
+                    formattedLines.push(`${date}\t${description}\t${points}`);
+                }
+            }
+
+            document.getElementById('outputFormatText').value = formattedLines.join("\n");
+        }
+
         function copyToClipboard() {
-            let outputText = document.getElementById('outputText');
+            const outputText = document.getElementById('outputText');
             outputText.select();
-            document.execCommand('copy'); // 이전 방식, 더 이상 권장되지 않지만 호환성을 위해 추가
-            // 최신 방법 (브라우저가 이 방법을 지원하는 경우)
-            // navigator.clipboard.writeText(outputText.value).then(() => alert("Copied to clipboard"));
+            document.execCommand('copy');
+            alert("Copied to clipboard");
+        }
+
+        function copyToClipboardFormat() {
+            const outputText = document.getElementById('outputFormatText');
+            outputText.select();
+            document.execCommand('copy');
             alert("Copied to clipboard");
         }
     </script>
 </body>
-
 </html>
